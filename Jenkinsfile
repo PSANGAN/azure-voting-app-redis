@@ -7,11 +7,6 @@ pipeline {
                 echo 'Hello World'
             }
         }
-        stage('Goodbye') {
-            steps {
-                echo 'Goodbye World'
-            }
-        }
         stage('Powershell Script Generator') {
             steps {
                  powershell 'Write-Output "Hello PowerShell!"'
@@ -22,5 +17,17 @@ pipeline {
             echo "$GIT_BRANCH"
             }
         }
+        stage('Docker Build') {
+         steps {
+            pwsh(script: 'docker images -a') // PWSH --> Since its run on Windows so we are using Powershell Core
+            pwsh(script: """
+               cd azure-vote/
+               docker images -a
+               docker build -t jenkins-pipeline .
+               docker images -a
+               cd ..
+            """)
+         }
+      }
     }
 }
