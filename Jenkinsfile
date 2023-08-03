@@ -17,5 +17,10 @@ pipeline {
                  powershell 'Write-Output "Hello PowerShell!"'
             }
         }
+        stage('Jenkin Environment Varibale'){
+            steps{
+            echo $GIT_BRANCH
+            }
+        }
     }
 }
